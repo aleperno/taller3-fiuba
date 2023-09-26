@@ -8,9 +8,7 @@ Para ello se incorpora un template para utilizarse
 
 ## Mathpix
 
-### Original
-![original](https://github.com/aleperno/taller3-fiuba/blob/main/ocr_tests/mathpix/original.jpeg?raw=true)
 
-
-### Resultado
-![resultado](https://github.com/aleperno/taller3-fiuba/blob/main/ocr_tests/mathpix/procesado.jpeg?raw=true)
+| original | resultado|
+|----------|----------|
+|![original](https://github.com/aleperno/taller3-fiuba/blob/main/ocr_tests/mathpix/original.jpeg?raw=true)|![resultado](https://github.com/aleperno/taller3-fiuba/blob/main/ocr_tests/mathpix/procesado.jpeg?raw=true)|
