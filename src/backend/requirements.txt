@@ -1,0 +1,8 @@
+fastapi
+pydantic
+sqlalchemy
+sqlalchemy-utils
+psycopg2
+uvicorn
+ipython
+celery
