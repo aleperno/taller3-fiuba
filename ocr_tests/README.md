@@ -26,3 +26,14 @@ El ejemplo del procesmiento está disponible en los [notebooks](https://github.c
 ### Desventajas
  - No es libre ni gratuito
  - El PDF debe pasarse por url, por lo cuál requerimos de un servicio adicional
+
+
+## Pyteseseract
+
+https://github.com/madmaze/pytesseract
+
+El ejemplo del procesmiento está disponible en los [notebooks](https://github.com/aleperno/taller3-fiuba/blob/main/ocr_tests/notebooks/pytesseract.ipynb)
+
+| original                                                                                                     | resultado                                                                                                      |
+|--------------------------------------------------------------------------------------------------------------|----------------------------------------------------------------------------------------------------------------|
+| ![original](https://github.com/aleperno/taller3-fiuba/blob/main/ocr_tests/pytesseract/original.png?raw=true) | ![resultado](https://github.com/aleperno/taller3-fiuba/blob/main/ocr_tests/pytesseract/procesado.png?raw=true) |
