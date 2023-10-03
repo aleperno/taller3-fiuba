@@ -14,7 +14,8 @@ def get_all_compress_task(db: Session):
 def create_compress_task(db: Session, task: schemas.TaskRequestBase):
     compress_task = models.CompressTask(global_palette_opt=task.global_palette_opt,
                                         white_background=task.white_background,
-                                        colours=task.colours, total_pages=task.total_pages)
+                                        colours=task.colours, total_pages=task.total_pages,
+                                        selected_pages=task.selected_pages)
     db.add(compress_task)
     db.commit()
     db.refresh(compress_task)

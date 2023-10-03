@@ -42,4 +42,5 @@ class CompressTask(BaseClass, Base):
     total_pages = Column(Integer, nullable=False)
     pages_done = Column(Integer, default=0)
     global_palette = Column(JSON, nullable=True)
+    selected_pages = Column(JSON, nullable=False)
     status = Column(Enum(TaskStateEnum), default=TaskStateEnum.pending)

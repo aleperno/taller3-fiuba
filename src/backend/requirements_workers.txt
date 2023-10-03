@@ -2,3 +2,8 @@ ipython
 celery
 pika
 retry
+numpy
+scipy
+Image
+pdf2image
+python-magic

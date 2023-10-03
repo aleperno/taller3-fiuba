@@ -18,6 +18,7 @@ services:
       volumes:
         - "./backend/sql_app.db:/db/sql_app.db"
         - "./backend/backend/:/code/backend"
+        - "./aux/:/tmp/"
       ports:
         - 8080:80
       entrypoint: ["uvicorn", "backend.app:app", "--host", "0.0.0.0", "--port", "80"]

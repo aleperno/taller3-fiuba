@@ -1,5 +1,5 @@
 import os
-from fastapi import Depends, FastAPI, HTTPException
+from fastapi import Depends, FastAPI, HTTPException, UploadFile
 from sqlalchemy.orm import Session
 
 # Para comunicarse con los workers
@@ -7,6 +7,7 @@ from celery import Celery
 
 from .database import crud, models, schemas, SessionLocal, engine
 from .utils import is_valid_uuid
+from .utils.file_manipulation import pdfbytes_to_images
 
 print("FastAPI intento conectar a la DB")
 print(f"El usuario es {os.getuid()}")
@@ -50,3 +51,18 @@ def get_compress_task(task_id: str, db: Session = Depends(get_db)):
 def get_all_compress_tasks(db: Session = Depends(get_db)):
     tasks = crud.get_all_compress_task(db)
     return tasks
+
+
+@app.post("/uploadfile/")
+def create_upload_file(file_content: schemas.ImageUpload):
+    converted_images = pdfbytes_to_images(file_content.file_content)
+    if not converted_images:
+        raise HTTPException(status_code=400, detail="Invalid PDF")
+
+    files = []
+
+    for n, image in enumerate(converted_images):
+        image.save(f"/tmp/test_{n}.png")
+        files.append(f"/tmp/test_{n}.png")
+
+    return {"content": files}

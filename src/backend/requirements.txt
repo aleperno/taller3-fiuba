@@ -6,3 +6,5 @@ psycopg2
 uvicorn
 ipython
 celery
+python-magic
+pdf2image

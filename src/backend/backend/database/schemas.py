@@ -1,5 +1,5 @@
 from pydantic import BaseModel, Json
-from typing import Optional, Any, Union
+from typing import Optional, Any, Union, List
 from uuid import UUID
 from .models import TaskStateEnum
 
@@ -9,6 +9,7 @@ class TaskRequestBase(BaseModel):
     white_background: bool
     colours: int
     total_pages: int
+    selected_pages: List[int]
 
 
 class TaskRequest(BaseModel):
@@ -24,3 +25,7 @@ class TaskResponse(TaskRequest, TaskRequestBase):
     class Config:
         orm_mode = True
         use_enum_values = True
+
+
+class ImageUpload(BaseModel):
+    file_content: str
