@@ -1,0 +1,37 @@
+version: '3'
+
+services:
+  db:
+    image: postgres:11-alpine
+    container_name: taller3-postgres
+    volumes:
+      - postgres_data:/var/lib/postgresql/data/
+    environment:
+      - POSTGRES_USER=${POSTGRES_USER}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+      - POSTGRES_DB=${POSTGRES_DB}
+    ports:
+      - ${POSTGRES_PUBLIC_PORT}:${POSTGRES_INTERNAL_PORT}
+    command: ["-p", "${POSTGRES_INTERNAL_PORT}"]
+
+  server:
+    container_name: taller3-server
+    build:
+      context: ./server
+      dockerfile: Dockerfile
+    volumes:
+      - "./server/:/code"
+    ports:
+      - 8080:80
+    entrypoint: ["uvicorn", "src.app:app", "--host", "0.0.0.0", "--port", "80"]
+    environment:
+      - RABBIT_HOST=rabbitmq_taller3
+      - POSTGRES_HOST=db
+      - POSTGRES_USER=${POSTGRES_USER}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+      - POSTGRES_DB=${POSTGRES_DB}
+      - POSTGRES_PORT=${POSTGRES_INTERNAL_PORT}
+
+volumes:
+  postgres_data:
+    driver: local
