@@ -5,3 +5,4 @@ sqlalchemy-utils
 psycopg2
 uvicorn
 celery
+pytest
