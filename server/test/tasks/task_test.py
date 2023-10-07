@@ -15,3 +15,10 @@ def task():
 
 def test_constructor(task):
     assert task.global_palette_opt == True
+    assert task.white_background == True
+    assert task.colours == 2
+    assert task.total_pages == 5
+    assert task.pages_done == 0
+    assert task.global_palette == {}
+    assert task.selected_pages == [0,1,2,3,4]
+    assert task.status == None
