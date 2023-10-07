@@ -11,11 +11,15 @@ class CreateTaskRequest(BaseModel):
     total_pages: int
     selected_pages: List[int]
 
-class GetTaskRequest(BaseModel):
+class TaskRequest(BaseModel):
     id: UUID
 
 class TaskResponse(BaseModel):
     id: UUID
+    global_palette_opt: Optional[bool]
+    white_background: bool
+    colours: int
+    total_pages: int
     pages_done: int
-    state: TaskState
-    global_palette: Optional[Union[dict, None]]
+    selected_pages: list
+    status: TaskState

@@ -16,4 +16,7 @@ class TaskRepository:
 
     def get_all(self) -> 'list[Task]':
         return self.db.query(Task).all()
-
+    
+    def delete_all(self):
+        self.db.query(Task).delete()
+        self.db.commit()

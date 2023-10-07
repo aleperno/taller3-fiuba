@@ -10,14 +10,14 @@ class TaskCreator:
 
     def create_task(self, task_request: CreateTaskRequest) -> TaskResponse:
         task = self.task_repository.create(Task(
-            task_request.global_palette_opt,
-            task_request.white_background,
-            task_request.colours,
-            task_request.total_pages,
-            task_request.selected_pages
+            global_palette_opt=task_request.global_palette_opt,
+            white_background=task_request.white_background,
+            colours=task_request.colours,
+            total_pages=task_request.total_pages,
+            selected_pages=task_request.selected_pages
         ))
 
-        for i in range(len(task.total_pages)):
+        for i in range(task.total_pages):
             self.celery.send_task('register', args=(str(task.id), i+1), queue='compression')
 
         return task
