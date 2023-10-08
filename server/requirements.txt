@@ -8,3 +8,4 @@ celery
 pytest
 pytest-cov
 mock-alchemy
+httpx

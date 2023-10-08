@@ -2,7 +2,7 @@ from typing import List
 from fastapi import FastAPI, Depends
 from celery import Celery
 
-from src.database import Base, get_session, engine
+from src.database import get_session
 
 from src.tasks.task_creator import TaskCreator
 from src.tasks.task_getter import TaskGetter
@@ -12,20 +12,21 @@ from src.tasks.task_data_transfer import CreateTaskRequest, TaskResponse, TaskRe
 
 app = FastAPI()
 
-Base.metadata.create_all(bind=engine)
+def get_celery():
+    celery = Celery()
+    celery.config_from_object('backend.common.workers_celeryconfig')
+    yield celery
 
-db_session = get_session()
-task_repository = TaskRepository(db_session)
-celery = Celery()
-celery.config_from_object('backend.common.workers_celeryconfig')
+def get_task_repository(db_session = Depends(get_session)):
+    yield TaskRepository(db_session)
 
-def task_creator() -> TaskCreator:
+def task_creator(task_repository = Depends(get_task_repository), celery = Depends(get_celery)) -> TaskCreator:
     yield TaskCreator(task_repository, celery)
 
-def task_getter() -> TaskGetter:
+def task_getter(task_repository = Depends(get_task_repository)) -> TaskGetter:
     yield TaskGetter(task_repository)
 
-def task_deleter() -> TaskDeleter:
+def task_deleter(task_repository = Depends(get_task_repository)) -> TaskDeleter:
     yield TaskDeleter(task_repository)
     
 

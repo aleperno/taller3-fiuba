@@ -10,13 +10,13 @@ PG_HOST = os.environ.get('POSTGRES_HOST', 'localhost')
 PG_PORT = os.environ.get('POSTGRES_PORT', '5432')
 PG_CONNECTION_URL = f"postgresql://{PG_USER}:{PG_PASS}@{PG_HOST}:{PG_PORT}/{PG_DB}"
 
-
-engine = create_engine(PG_CONNECTION_URL)
-Session = sessionmaker(autocommit=False, autoflush=False, bind=engine)
-
 Base = declarative_base()
 
 def get_session():
+    engine = create_engine(PG_CONNECTION_URL)
+    Session = sessionmaker(autocommit=False, autoflush=False, bind=engine)
+
+    Base.metadata.create_all(bind=engine)
     session = Session()
     try:
         return session
