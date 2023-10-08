@@ -10,4 +10,4 @@ services:
         - ".:/code"
       ports:
         - 8080:80
-      entrypoint: [python, -m, pytest]
+      entrypoint: [python, -m, pytest, --cov]

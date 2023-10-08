@@ -6,4 +6,5 @@ psycopg2
 uvicorn
 celery
 pytest
+pytest-cov
 mock-alchemy
