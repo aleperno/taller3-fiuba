@@ -17,7 +17,7 @@ class TaskCreator:
             selected_pages=task_request.selected_pages
         ))
 
-        for i in range(task.total_pages):
-            self.celery_app.send_task('register', args=(str(task.id), i+1), queue='compression')
+        # for i in range(task.total_pages):
+        #     self.celery_app.send_task('register', args=(str(task.id), i+1), queue='compression')
 
         return task

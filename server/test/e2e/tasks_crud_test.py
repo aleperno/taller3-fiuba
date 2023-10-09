@@ -30,7 +30,27 @@ def get_test_db():
 
 app.dependency_overrides[get_session] = get_test_db
 
-def test_get_all_tasks():
+def test_create_tasks_and_get_all():
+    create_task_request = {
+        "global_palette_opt": True,
+        "white_background": True,
+        "colours": 5,
+        "total_pages": 2,
+        "selected_pages": [0,1]
+    }
+    post_response = client.post("/tasks/compress", json=create_task_request)
+
     response = client.get("/tasks/compress")
     assert response.status_code == 200
-    assert response.json() == []
+    assert response.json() == [
+        {
+            "id": post_response.json()["id"],
+            "global_palette_opt": True,
+            "white_background": True,
+            "colours": 5,
+            "total_pages": 2,
+            "selected_pages": [0,1],
+            "status": "pending",
+            "pages_done": 0
+        }
+    ]
