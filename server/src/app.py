@@ -14,7 +14,7 @@ app = FastAPI()
 
 def get_celery():
     celery = Celery()
-    celery.config_from_object('src.celery_config')
+    celery.config_from_object('celery_config')
     yield celery
 
 def get_task_repository(db_session = Depends(get_session)):

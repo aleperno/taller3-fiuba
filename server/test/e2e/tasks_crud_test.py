@@ -1,12 +1,15 @@
 from src.database import get_session
+from src.database import Base
+from src.app import app
+
 from sqlalchemy import create_engine, text
 from sqlalchemy.orm import sessionmaker
 
-from src.database import Base
+from celery import Celery
 
 from fastapi.testclient import TestClient
 
-from src.app import app
+
 
 client = TestClient(app)
 
@@ -28,7 +31,13 @@ def get_test_db():
     finally:
         session.close()
 
+def get_celery():
+    celery = Celery()
+    celery.config_from_object('e2e_celery_config')
+    
+
 app.dependency_overrides[get_session] = get_test_db
+app.dependency_overrides[get_celery] = get_celery
 
 def test_create_tasks_and_get_all():
     create_task_request = {
