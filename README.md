@@ -124,7 +124,7 @@ cada uno de ellos.
 En el proyecto se provee un archivo `.env.example` que deberá ser renombrado a `.env` y completado con las credenciales
 pertinentes.
 
-Asímismo en la carpeta `frontend` se encuentra un archivo `firebaserc` que es necesario modificar para que el nombre del
+Asímismo, en la carpeta `frontend` se encuentra un archivo `firebaserc` que es necesario modificar para que el nombre del
 proyecto de firebase sea el correcto
 
 # Próximos Pasos y Posibles Mejoras
