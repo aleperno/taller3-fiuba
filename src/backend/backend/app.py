@@ -3,7 +3,7 @@ import time
 from fastapi import FastAPI, WebSocket, HTTPException, Response, Depends, BackgroundTasks, WebSocket, WebSocketException
 from sqlalchemy.orm import Session
 from starlette.middleware.cors import CORSMiddleware
-# Para comunicarse con los workers
+
 from celery import Celery
 
 from .database import crud, models, SessionLocal, engine
@@ -45,7 +45,6 @@ local_celery_app = Celery()
 local_celery_app.config_from_object('backend.common.backend_celeryconfig')
 
 
-# Dependency
 def get_db():
     db = SessionLocal()
     try:

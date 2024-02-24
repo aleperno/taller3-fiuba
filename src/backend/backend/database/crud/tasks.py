@@ -42,7 +42,6 @@ def process_upload_request(db: Session, user: models.User, request: schemas.Uplo
     db.commit()
     db.refresh(note_task)
 
-    # Upload Task is mandatory
     upload_task = models.UploadSubTask(note_task_id=note_task.id)
     db.add(upload_task)
 

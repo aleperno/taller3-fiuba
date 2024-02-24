@@ -128,17 +128,16 @@ def subtask_scheduler_handle(file_id, subtask):
         #
         # Como criterio para saber si una tarea finalizó o no me fijo si está disponible el campo de url relacionado
         if note_task.convert and subtask in ('compress_subtask', 'upload_subtask'):  # Para no validar de gusto
-            print("Detecto que deberia pasar a Latex")
             if (note_task.compress and fs.compressed_url) or (not note_task.compress and fs.original_url):
-                print(f"PERNO debo enviar a convertir a latex {file_id}")
+                print(f"Enviar a convertir a latex {file_id}")
                 app.send_task('convert_to_latex', queue='backend', kwargs={'file_id': file_id})
             else:
-                print("No se cumplieron las condiciones")
+                print(f"Documento {file_id} no cumple las condiciones para pasar a latex")
 
         # Valido si requiero buildear el latex
         if note_task.convert and subtask == 'latex_convert_subtask' and fs.latex_zip_url:
             if fs.latex_zip_url:
-                print(f"PERNO debo enviar a buildear el latex {file_id}")
+                print(f"Enviar a buildear el latex {file_id}")
                 app.send_task('build_latex', queue='latex_builder_queue', kwargs={'file_id': file_id,
                                                                                 'latex_source': fs.latex_zip_url,
                                                                                 'pdf_name': f"{file_id}_latex.pdf"})
