@@ -57,6 +57,10 @@ A continuación describiremos las funcionalidades actualmente presentes en la ap
 
 # Arquitectura y Tecnologías
 
+Para lograr una adecuada separación de incumbencias, el código se encuentra separado en un frontend con la interfaz de usuario, y un backend, los cuales se comunican mediante pedidos y respuestas HTTP
+
+![Diagrama de robustez](https://github.com/aleperno/taller3-fiuba/blob/main/.img/diagrama_robustez.jpg)
+
 ## Frontend
 
 El frontend fue desarrollado en Typescript usando la biblioteca React, y se hace un gran uso de React-Bootstrap. Para el login se emplea
