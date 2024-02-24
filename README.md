@@ -11,12 +11,12 @@ Una demo del proyecto puede verse [acá](https://youtu.be/VmTowG-jWfw)
 
 # Introducción
 
-1. **Centralización**: No existe hoy una única fuente donde se puedan encontrar o buscar los apuntes. Hoy los recursos
-   están distribuidos en grupos de Facebook, Drive, Github, etc. El objetivo sería centralizar todos estos recursos en
+1. **Centralización**: No existe hoy una única fuente donde se puedan encontrar o buscar apuntes de FIUBA. Hoy los recursos
+   están distribuidos en grupos de Facebook, Drive, Github, etc. El objetivo de este proyecto es centralizar todos estos recursos en
    un único lugar, done los alumnos puedan subir, categorizar, compartir, buscar y descargar apuntes.
-2. **Calidad**: La calidad de los apuntes es muy variable, si bien las cámaras de los celulares hoy en día poseen gran
+2. **Calidad**: La calidad de los apuntes es muy variable - si bien las cámaras de los celulares hoy en día poseen gran
    definición, no es raro encontrase con apuntes cuya fuente son fotos carentes de nitidez. También sucede que archivos
-   que sí poseen buena definición, tambien poseen un gran tamaño lo que dificulta su veloz descarga. El objetivo de este
+   que si poseen buena definición, tambien poseen un gran tamaño lo que dificulta su veloz descarga y almacenamiento. El objetivo de este
    item es otorgar herramientas de procesamiento de imagen para mejorar la calidad de las imágenes, a la vez de lograr
    tamaños de archivos manejables.
 3. **Digitalización**: La mayoría de los apuntes siguen siendo en formato papel con letra manuscrita, una de las herramientas
@@ -59,7 +59,7 @@ A continuación describiremos las funcionalidades actualmente presentes en la ap
 
 ## Frontend
 
-El frontend fue desarrollado en React con Typescript y se hace un gran uso de React-Bootstrap. Para el login se emplea
+El frontend fue desarrollado en Typescript usando la biblioteca React, y se hace un gran uso de React-Bootstrap. Para el login se emplea
 el servicio de FireBase.
 
 ## Backend
