@@ -1,0 +1,15 @@
+fastapi
+pydantic
+sqlalchemy
+sqlalchemy-utils
+psycopg2
+uvicorn
+ipython
+celery
+python-magic
+pdf2image
+pypdf2
+requests
+fastapi-sessions
+firebase-admin
+email-validator

@@ -1,0 +1,17 @@
+ARG DEBIAN_FRONTEND=noninteractive
+FROM ubuntu:jammy
+
+# set environment variables
+ENV PYTHONDONTWRITEBYTECODE 1
+ENV PYTHONUNBUFFERED 1
+
+# Instalo cosas de postgres
+RUN apt update
+RUN DEBIAN_FRONTEND=noninteractive apt install -y python3-pip texlive-latex-recommended texlive-science texlive-fonts-extra curl
+RUN DEBIAN_FRONTEND=noninteractive apt install -y libmagic-dev
+WORKDIR /code
+
+# Copio el requirements.txt
+COPY ./requirements_latex_builder.txt /code/requirements.txt
+
+RUN pip install --no-cache-dir --upgrade -r /code/requirements.txt

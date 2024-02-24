@@ -1,0 +1,42 @@
+.drag-drop-zone {
+    width: 60%;
+    height: 60%;
+    border: 2px dashed #aaa;
+    border-radius: 5px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+  }
+  
+  .drag-drop-zone.active {
+    background-color: #f0f0f0;
+  }
+  
+  .drag-drop-zone p {
+    margin: 0;
+  }
+  
+  .centered-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+  }
+
+  .full-area-label {
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  .full-area-label p {
+    margin: 0;
+    padding: 0;
+    text-align: center;
+  }

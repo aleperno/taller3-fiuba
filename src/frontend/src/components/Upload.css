@@ -1,0 +1,37 @@
+.drag-drop-zone {
+    width: 60%;
+    height: 60%;
+    border: 2px dashed #aaa;
+    border-radius: 5px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+  }
+  
+  .drag-drop-zone.active {
+    background-color: #f0f0f0;
+  }
+  
+  .drag-drop-zone p {
+    margin: 0;
+  }
+  
+  .uploaded-centered-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 80vh;
+    width: 100vw;
+  }
+
+  .pdf-viewer {
+    width: 40%;
+    height: 100%;
+  }
+
+  .pdf-options-container {
+    position: relative;
+    left: 10%;
+    width: 40%;
+  }

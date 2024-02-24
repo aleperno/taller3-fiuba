@@ -1,0 +1,7 @@
+# GIT Ignore Specific for SRC
+
+*.swp
+aux/*.png
+aux/*.pdf
+aux/*/
+

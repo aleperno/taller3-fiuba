@@ -1,0 +1,12 @@
+ipython
+celery
+pika
+retry
+numpy
+scipy
+Image
+noteshrink
+pdf2image
+python-magic
+pypdf2
+requests

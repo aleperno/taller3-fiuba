@@ -1,0 +1,6 @@
+ipython
+celery
+requests
+python-magic
+pdf2image
+pypdf2

@@ -1,0 +1,175 @@
+version: '3.4'
+
+services:
+  rabbit:
+    image: rabbitmq:3-management
+    container_name: rabbitmq_taller3
+    ports:
+      - 15672:15672
+      - 5672:5672
+    volumes:
+      - ./rabbit.cfg:/etc/rabbit/conf.d/10-defaults.conf
+  frontend:
+    image: taller3-frontend
+    container_name: taller3-frontend
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    working_dir: /code
+    volumes:
+      - "./frontend/src/:/code/src"
+    ports:
+      - 3000:3000
+    environment:
+      - REACT_APP_APP_MODE=development
+      - REACT_APP_NO_API_AUTH=false
+    depends_on:
+      - firebase
+    healthcheck:
+      test: curl --fail http://localhost:9099 || exit 1
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 60s
+    entrypoint: ["npm", "start"]
+  firebase:
+    image: apernin/firebase
+    container_name: taller3-firebase
+    volumes:
+      - "./frontend/.firebaserc:/home/firebase-emulator/.firebaserc"
+    ports:
+      - 4000:4000
+      - 9099:9099
+  backend-api:
+    image: taller3-backend
+    container_name: taller3-api
+    build:
+      context: ./backend
+      dockerfile: Dockerfile_backend
+    volumes:
+      - "./backend/sql_app.db:/db/sql_app.db"
+      - "./backend/backend/:/code/backend"
+    ports:
+      - 8080:80
+    entrypoint: [ "uvicorn", "backend.app:app", "--host", "0.0.0.0", "--port", "80", "--reload" ]
+    depends_on:
+      - firebase
+      - rabbit
+      - db
+    healthcheck:
+      test: curl --fail http://localhost:9099 || exit 1
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 60s
+    environment:
+      - RABBIT_HOST=rabbitmq_taller3
+      - POSTGRES_HOST=db
+      - POSTGRES_USER=${POSTGRES_USER}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+      - POSTGRES_DB=${POSTGRES_DB}
+      - POSTGRES_PORT=${POSTGRES_INTERNAL_PORT}
+      - USE_DB=${USE_DB}
+      - FTPUSER=${FTPUSER}
+      - FTPPASS=${FTPPASS}
+      - FTPHOST=${FTPHOST}
+      - FTPPATH=${FTPPATH}
+      - MATHPIX_APP_ID=${MATHPIX_APP_ID}
+      - MATHPIX_APP_KEY=${MATHPIX_APP_KEY}
+      - GOOGLE_CLOUD_PROJECT=fiuba-apuntes
+      - FIREBASE_AUTH_EMULATOR_HOST=firebase:9099
+  backend-worker:
+    image: taller3-backend
+    container_name: taller3-backend-worker
+    build:
+      context: ./backend
+      dockerfile: Dockerfile_backend
+    volumes:
+      - "./backend/sql_app.db:/db/sql_app.db"
+      - "./backend/backend:/code/backend"
+    entrypoint: [ "celery", "-A", "backend.workers.backend_tasks", "worker", "--loglevel=INFO", "-Q", "results,backend", "-c", "3" ]
+    environment:
+      - RABBIT_HOST=rabbitmq_taller3
+      - POSTGRES_HOST=db
+      - POSTGRES_USER=${POSTGRES_USER}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+      - POSTGRES_DB=${POSTGRES_DB}
+      - POSTGRES_PORT=${POSTGRES_INTERNAL_PORT}
+      - USE_DB=${USE_DB}
+      - FTPUSER=${FTPUSER}
+      - FTPPASS=${FTPPASS}
+      - FTPHOST=${FTPHOST}
+      - FTPPATH=${FTPPATH}
+      - MATHPIX_APP_ID=${MATHPIX_APP_ID}
+      - MATHPIX_APP_KEY=${MATHPIX_APP_KEY}
+    depends_on:
+      - rabbit
+      - db
+  backend-beat:
+    image: taller3-backend
+    container_name: taller3-backend-beat
+    build:
+      context: ./backend
+      dockerfile: Dockerfile_backend
+    volumes:
+      - "./backend/sql_app.db:/db/sql_app.db"
+      - "./backend/backend:/code/backend"
+    entrypoint: [ "celery", "-A", "backend.workers.backend_tasks", "beat", "--loglevel=INFO"]
+    environment:
+      - RABBIT_HOST=rabbitmq_taller3
+      - POSTGRES_HOST=db
+      - POSTGRES_USER=${POSTGRES_USER}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+      - POSTGRES_DB=${POSTGRES_DB}
+      - POSTGRES_PORT=${POSTGRES_INTERNAL_PORT}
+      - USE_DB=${USE_DB}
+    depends_on:
+      - rabbit
+      - db
+  workers:
+    image: taller3-workers
+    build:
+      context: ./backend
+      dockerfile: Dockerfile_workers
+    volumes:
+      - "./backend/backend:/code/backend"
+    entrypoint: [ "celery", "-A", "backend.workers.tasks", "worker", "--loglevel=INFO", "-Q", "compression" ]
+    deploy:
+      replicas: 2
+    environment:
+      - RABBIT_HOST=rabbit
+    depends_on:
+      - rabbit
+  latex-builder:
+    image: taller3-worker-latex
+    container_name: taller3-latex-builder
+    build:
+      context: ./backend
+      dockerfile: Dockerfile_latex_builder
+    volumes:
+      - "./backend/backend:/code/backend"
+    entrypoint: [ "celery", "-A", "backend.workers.latex_builder_tasks", "worker", "--loglevel=INFO", "-Q", "latex_builder_queue" ]
+    environment:
+      - RABBIT_HOST=rabbit
+      - FTPUSER=${FTPUSER}
+      - FTPPASS=${FTPPASS}
+      - FTPHOST=${FTPHOST}
+      - FTPPATH=${FTPPATH}
+    depends_on:
+      - rabbit
+  db:
+    image: postgres:11-alpine
+    container_name: postgres_taller3
+    volumes:
+      - postgres_data:/var/lib/postgresql/data/
+    environment:
+      - POSTGRES_USER=t3user
+      - POSTGRES_PASSWORD=t3pass
+      - POSTGRES_DB=t3db
+    ports:
+      - ${POSTGRES_PUBLIC_PORT}:${POSTGRES_INTERNAL_PORT}
+    command: [ "-p", "${POSTGRES_INTERNAL_PORT}" ]
+volumes:
+  postgres_data:
+    driver: local
+    name: taller3-db-volume
